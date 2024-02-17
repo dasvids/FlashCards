@@ -3,13 +3,16 @@ import { View, Text, StyleSheet, FlatList  } from "react-native";
 import Flashcard from "./Flashcard";
 
 export default function FlashcardList({ flashcards }) {
+
+  const renderItem = ({ item }) => <Flashcard flashcard={item} />;
   //props.flashcards
   return (
-    <View style={styles.cardGrid}>
-      {flashcards.map((flashcard) => {
-        return <Flashcard flashcard={flashcard} key={flashcard.id} />;
-      })}
-    </View>
+    <FlatList
+      data={flashcards}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id.toString()}
+      contentContainerStyle={styles.cardGrid}
+    />
   );
 }
 
@@ -19,5 +22,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "center",
     gap: 8,
+    justifyContent: "center",
+    alignItems: "center",
   }
 });

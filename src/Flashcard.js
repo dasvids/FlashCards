@@ -1,15 +1,9 @@
 import React, { useState } from "react";
-import { Text, TouchableOpacity, StyleSheet, View, Dimensions  } from "react-native";
-import Animated, {
-  useAnimatedStyle,
-  withTiming,
-} from "react-native-reanimated";
+import { Text, TouchableOpacity, StyleSheet, View, Dimensions } from "react-native";
+import Animated, { useAnimatedStyle, withTiming } from "react-native-reanimated";
 
 const Flashcard = ({ flashcard }) => {
   const [flipped, setFlipped] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(Dimensions.get("window").width);
-
-  
 
   const handleFlip = () => {
     setFlipped(!flipped);
@@ -52,7 +46,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     marginBottom: 20,
     maxWidth: 400,
-    // alignSelf: "center",
+    maxHeight: 200, // Максимальная высота карточки
   },
   content: {
     backgroundColor: "#fff",
