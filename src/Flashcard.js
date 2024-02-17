@@ -1,34 +1,36 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, TouchableOpacity, StyleSheet, View, Dimensions  } from "react-native";
 import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
 
-export default function Flashcard({ flashcard }) {
+const Flashcard = ({ flashcard }) => {
   const [flipped, setFlipped] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(Dimensions.get("window").width);
+
   
 
   const handleFlip = () => {
     setFlipped(!flipped);
   };
 
-  const frontRotateY = useAnimatedStyle(() => {
-    return {
-      transform: [{ rotateY: withTiming(flipped ? "180deg" : "0deg") }],
-    };
-  });
+  const frontRotateY = useAnimatedStyle(() => ({
+    transform: [{ rotateY: withTiming(flipped ? "180deg" : "0deg") }],
+    opacity: withTiming(flipped ? 0 : 1),
+    zIndex: flipped ? -1 : 1,
+  }));
 
-  const backRotateY = useAnimatedStyle(() => {
-    return {
-      transform: [{ rotateY: withTiming(flipped ? "0deg" : "180deg") }],
-    };
-  });
+  const backRotateY = useAnimatedStyle(() => ({
+    transform: [{ rotateY: withTiming(flipped ? "0deg" : "-180deg") }],
+    opacity: withTiming(flipped ? 1 : 0),
+    zIndex: flipped ? 1 : -1,
+  }));
 
   return (
-    <TouchableOpacity onPress={handleFlip} style={styles.cardContainer}>
-      <Animated.View style={[styles.card, frontRotateY]}>
-        <Text style={styles.question}>{flashcard.question}</Text>
+    <TouchableOpacity onPress={handleFlip} style={styles.card}>
+      <Animated.View style={[styles.content, frontRotateY]}>
+        <Text style={styles.text}>{flashcard.question}</Text>
         <View style={styles.optionsContainer}>
           {flashcard.options.map((option, index) => (
             <Text key={index} style={styles.option}>
@@ -37,49 +39,52 @@ export default function Flashcard({ flashcard }) {
           ))}
         </View>
       </Animated.View>
-      <Animated.View style={[styles.card, styles.backCard, backRotateY]}>
-        <Text style={styles.answer}>{flashcard.answer}</Text>
+      <Animated.View style={[styles.content, styles.backContent, backRotateY]}>
+        <Text style={styles.text}>{flashcard.answer}</Text>
       </Animated.View>
     </TouchableOpacity>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  cardContainer: {
-    width: 150,
-    height: 150,
-    perspective: 1000,
-    overflow: "hidden", 
-    margin: 4,
-    borderRadius: 8,
-  },
   card: {
-    width: "100%",
-    height: "100%",
+    borderRadius: 8,
+    overflow: "hidden",
+    marginBottom: 20,
+    maxWidth: 400,
+    // alignSelf: "center",
+  },
+  content: {
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     backfaceVisibility: "hidden",
-    position: "absolute",
+    padding: 10,
+    position: "relative",
   },
-  backCard: {
+  backContent: {
     transform: [{ rotateY: "180deg" }],
+    position: "absolute",
     top: 0,
     left: 0,
+    right: 0,
+    bottom: 0,
   },
-  question: {
-    fontSize: 20,
-    marginBottom: 10,
+  text: {
+    fontSize: 18,
+    textAlign: "left",
   },
   optionsContainer: {
-    alignItems: "center",
+    alignItems: "left",
+    marginTop: 10,
+    textAlign: "left",
   },
   option: {
     fontSize: 16,
     marginBottom: 5,
+    textAlign: "left",
     color: "#555",
   },
-  answer: {
-    fontSize: 20,
-  },
 });
+
+export default Flashcard;
