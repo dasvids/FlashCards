@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Button, TextInput, Picker, StyleSheet, Dimensions } from "react-native";
+import { View, Button, TextInput, StyleSheet, Dimensions } from "react-native";
+import { Picker } from '@react-native-picker/picker';
 import axios from "axios";
 import FlashcardList from "./src/FlashcardList";
 
