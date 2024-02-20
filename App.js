@@ -3,6 +3,7 @@ import { View, Button, TextInput, StyleSheet, Dimensions } from "react-native";
 import { Picker } from '@react-native-picker/picker';
 import axios from "axios";
 import FlashcardList from "./src/FlashcardList";
+import he from 'he';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const baseFontSize = 16;
@@ -68,12 +69,10 @@ export default function App() {
   };
 
   const decodeEntities = (encodedString) => {
-    const parser = new DOMParser();
-    const dom = parser.parseFromString(
-      "<!doctype html><body>" + encodedString,
-      "text/html"
-    );
-    return dom.body.textContent;
+    // const el = document.createElement("textarea");
+    // el.innerHTML = encodedString;
+    // return el.value;
+    return he.decode(encodedString);
   };
 
   return (
