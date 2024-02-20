@@ -1,22 +1,16 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import Flashcard from "./Flashcard";
 
 export default function FlashcardList({ flashcards }) {
-
-  const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.itemContainer}>
-      <Flashcard flashcard={item} />
-    </TouchableOpacity>
-  );
-
   return (
-    <FlatList
-      data={flashcards}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id.toString()}
-      contentContainerStyle={styles.cardGrid}
-    />
+    <ScrollView contentContainerStyle={styles.cardGrid}>
+      {flashcards.map((flashcard) => (
+        <TouchableOpacity key={flashcard.id} style={styles.itemContainer}>
+          <Flashcard flashcard={flashcard} />
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
   );
 }
 
@@ -24,7 +18,7 @@ const styles = StyleSheet.create({
   cardGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "flex-start", 
+    justifyContent: "flex-start",
     alignItems: "center",
   },
   itemContainer: {
